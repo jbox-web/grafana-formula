@@ -50,6 +50,7 @@ suites:
       state_top:
         base:
           '*':
+            - states.repo
             - grafana._mapdata
             - grafana
       pillars:
@@ -57,8 +58,17 @@ suites:
           base:
             '*':
               - grafana
+              - veilleco
+        # As in production: the package repository is not the formula's
+        veilleco.sls:
+          grafana:
+            pkg:
+              use_upstream_repo: false
       pillars_from_files:
         grafana.sls: pillar.example
+      dependencies:
+        - name: states
+          path: ./test/salt
     verifier:
       inspec_tests:
         - path: test/integration/default
